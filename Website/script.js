@@ -1,23 +1,20 @@
 function getNum() {
 
     // Call the Go API
-    fetch('http://localhost:8080/books')
+    fetch('http://localhost:8080/getNums')
         .then(response => response.json())
-        .then(data => displayBooks(data))
+        .then(data => displayResults(data))
         .catch(error => console.error('Error:', error));
 
 }
 
-function displayBooks(results) {
-    const booksContainer = document.getElementById('results');
-    booksContainer.innerHTML = '';
+function displayResults(results) {
+    const cont = document.getElementById('results');
+    cont.innerHTML = '';
 
     results.forEach(result => {
-        const bookDiv = document.createElement('div');
-
-        // Here you create the line with the results!
-        bookDiv.innerHTML = `<strong>Number of occurencers of ${result.word}:</strong> ${result.number}`;
-
-        booksContainer.appendChild(bookDiv);
+        const resultDiv = document.createElement('div');
+        bookDiv.innerHTML = `<strong>Number of occurencers of ${result.Word}:</strong> ${result.Number}`;
+        cont.appendChild(resultDiv);
     });
 }
