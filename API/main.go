@@ -15,9 +15,9 @@ type Word struct {
 }
 
 func getWordsHandler(w http.ResponseWriter, r *http.Request) {
-	var wor Word = {
-		Number = getNumberOfWords(r.word)
-		Word = r.word
+	wor := Word {
+		Number: getNumberOfWords(r.word),
+		Word: r.word,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
