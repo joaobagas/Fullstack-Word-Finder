@@ -15,10 +15,23 @@ type Word struct {
 }
 
 func getWordsHandler(w http.ResponseWriter, r *http.Request) {
-	wor := Word {
-		Number: getNumberOfWords(r.word),
-		Word: r.word,
+	var str string
+
+	err := json.NewDecoder(r.Body).Decode(&str)
+
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
 	}
+
+	fmt.Println("3:Error checked")
+
+	wor := Word {
+		Number: getNumberOfWords(str),
+		Word: str,
+	}
+
+	fmt.Println("4:Preparing header")
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(wor)
