@@ -1,17 +1,16 @@
 function getNum() {
     const val = document.querySelector('input').value;
 
-    // Call the Go API
     fetch('http://localhost:8080/getNums', {
-        method: 'GET',
+        method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },})
-        .then(response => response.json())
-        .then(data => displayResults(data))
-        .catch(error => console.error('Error:', error));
-
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "id": val })
+    })
+   .then(response => response.json())
+   .then(data => displayResults(data))
 }
 
 function displayResults(results) {

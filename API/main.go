@@ -16,40 +16,29 @@ type Word struct {
 	Word   string `json:"word"`
 }
 
-func getWordsHandler(w http.ResponseWriter, r *http.Request) {
-	var str string
+type Test struct {
+	ID   string `json:"id"`
+}
 
+func getWordsHandler(w http.ResponseWriter, r *http.Request) {
+	var str Test
+	fmt.Println(*r)
 	err := json.NewDecoder(r.Body).Decode(&str)
-	fmt.Println("test1")
+	fmt.Println(str)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("test2")
-	wor := Word {
-		Number: getNumberOfWords(str),
-		Word: str,
-	}
-	fmt.Println("test3")
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(wor)
-
-	//s = `{"message": "` + getNumberOfWords(str) +  `"}`
-	//w.Write([]byte(s)
-}
-
-func test(w http.ResponseWriter, r *http.Request) {
 
 	wor := Word {
-		Number: getNumberOfWords("str"),
-		Word: "str",
+		Number: getNumberOfWords(str.ID),
+		Word: str.ID,
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(wor)
 }
-
 
 func readFile() []string {
 	var split []string
@@ -111,7 +100,6 @@ func main() {
 	port := ":8080"
 	fmt.Println("Server listening on port: ", port)
 	router := mux.NewRouter()
-		router.HandleFunc("/getNums", test).Methods("GET")
 		router.HandleFunc("/getNums", getWordsHandler).Methods("POST")
 		
 		http.ListenAndServe(port,
@@ -121,15 +109,3 @@ func main() {
 				handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
 			)(router))
 }
-/*
-func main() {
-	http.HandleFunc("/getNums", getWordsHandler)
-    
-	port := ":8080"
-	println("Server listening on port: ", port)
-	err := http.ListenAndServe(port, nil)
-	if err != nil {
-		panic(err)
-	}
-}
-*/
