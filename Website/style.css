@@ -2,7 +2,7 @@
     background-color: gray;
 }
 
-.centre {
+.centre{
     background-color: white;
     border: 5px solid;
     margin: auto;
@@ -10,6 +10,11 @@
     padding: 10px;
 }
 
+div, strong {
+    background-color: white;
+}
+
 button, input {
     background-color: whitesmoke;
+    margin-bottom: 20px;
 }

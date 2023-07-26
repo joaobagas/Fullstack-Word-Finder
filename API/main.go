@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"os"
 	"fmt"
 	"io"
@@ -18,24 +20,36 @@ func getWordsHandler(w http.ResponseWriter, r *http.Request) {
 	var str string
 
 	err := json.NewDecoder(r.Body).Decode(&str)
-
+	fmt.Println("test1")
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-
-	fmt.Println("3:Error checked")
-
+	fmt.Println("test2")
 	wor := Word {
 		Number: getNumberOfWords(str),
 		Word: str,
 	}
-
-	fmt.Println("4:Preparing header")
-
+	fmt.Println("test3")
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(wor)
+
+	//s = `{"message": "` + getNumberOfWords(str) +  `"}`
+	//w.Write([]byte(s)
+}
+
+func test(w http.ResponseWriter, r *http.Request) {
+
+	wor := Word {
+		Number: getNumberOfWords("str"),
+		Word: "str",
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(wor)
 }
+
 
 func readFile() []string {
 	var split []string
@@ -94,6 +108,21 @@ func getNumberOfWords(word string) int {
 }
 
 func main() {
+	port := ":8080"
+	fmt.Println("Server listening on port: ", port)
+	router := mux.NewRouter()
+		router.HandleFunc("/getNums", test).Methods("GET")
+		router.HandleFunc("/getNums", getWordsHandler).Methods("POST")
+		
+		http.ListenAndServe(port,
+			handlers.CORS(
+				handlers.AllowedOrigins([]string{"*"}),
+				handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+				handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+			)(router))
+}
+/*
+func main() {
 	http.HandleFunc("/getNums", getWordsHandler)
     
 	port := ":8080"
@@ -103,3 +132,4 @@ func main() {
 		panic(err)
 	}
 }
+*/

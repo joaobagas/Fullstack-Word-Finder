@@ -3,14 +3,11 @@ function getNum() {
 
     // Call the Go API
     fetch('http://localhost:8080/getNums', {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-        body: `{
-           word: word 
-        }`,})
+        },})
         .then(response => response.json())
         .then(data => displayResults(data))
         .catch(error => console.error('Error:', error));
@@ -22,11 +19,7 @@ function displayResults(results) {
     const cont = document.getElementById('results');
 
     cont.innerHTML = '';
-
-    // For each result write the result to the element
-    results.forEach(result => {
-        const resultDiv = document.createElement('div');
-        bookDiv.innerHTML = `<strong>Number of occurencers of ${result.Word}:</strong> ${result.Number}`;
-        cont.appendChild(resultDiv);
-    });
+    const resultDiv = document.createElement('div');
+    resultDiv.innerHTML = `<strong>Number of occurencers of word "${results.word}":</strong> ${results.number}`;
+    cont.appendChild(resultDiv);
 }
