@@ -7,7 +7,7 @@ function getNum() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ "id": val })
+        body: JSON.stringify({ "word": val })
     })
    .then(response => response.json())
    .then(data => displayResults(data))
